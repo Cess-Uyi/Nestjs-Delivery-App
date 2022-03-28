@@ -1,16 +1,16 @@
-export = {
+module.exports = {
   type: 'postgres',
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  entities: ['dist/**/*.model{.ts,.js}'],
+  entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/src/migrations/**/*{.ts,.js}'],
   synchronize: false,
   logging: true,
   cli: {
-    entitiesDir: 'src/models',
+    entitiesDir: 'src/entities',
     migrationsDir: 'src/migrations',
   },
 };

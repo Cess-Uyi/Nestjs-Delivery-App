@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { appConfig, databaseConfig } from './config/index';
-import { HelloWorldModule } from './server/hello-world/hello-world.module';
+// import { HelloWorldModule } from './server/hello-world/hello-world.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SharedModule } from './shared/shared.module';
+// import { SharedModule } from './shared/shared.module';
 import { getConnectionOptions } from 'typeorm';
+import { TrakkRegistrationModule } from './TrakkRegistration.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { getConnectionOptions } from 'typeorm';
     TypeOrmModule.forRootAsync({
       useFactory: async () => Object.assign(await getConnectionOptions(), {}),
     }),
+    TrakkRegistrationModule,
   ],
 })
 export class AppModule {}
