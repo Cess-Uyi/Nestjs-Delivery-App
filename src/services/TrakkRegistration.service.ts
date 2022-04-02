@@ -5,13 +5,13 @@ import { lastValueFrom, map, Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { TrakkRegistrationDto } from 'src/dtos/TrakkRegistration.dto';
 import { TrakkRegistration } from 'src/entities/TrakkRegistration.entity';
-import { TrakkRegistrationRepository } from 'src/repositories/TrakkRegistration.repository';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TrakkRegistrationService {
   constructor(
-    @InjectRepository(TrakkRegistrationRepository)
-    private readonly trakkRegistrationRepository: TrakkRegistrationRepository,
+    @InjectRepository(TrakkRegistration)
+    private readonly trakkRegistrationRepository: Repository<TrakkRegistration>,
     private httpService: HttpService,
   ) {}
 
@@ -46,7 +46,7 @@ export class TrakkRegistrationService {
     try {
       const newUser = await lastValueFrom(
         this.httpService
-          .post(process.env.SSO_URL, newRegistration, {
+          .post(`${process.env.SSO_URL}` + `/User/register`, newRegistration, {
             headers: {
               'Content-Type': 'application/json',
             },

@@ -5,10 +5,11 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors();
 
+  /*swagger setup*/
   const config = new DocumentBuilder()
     .setTitle('Trakk registration')
     .setDescription('The Trakk registration API description')

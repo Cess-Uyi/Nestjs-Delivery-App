@@ -10,7 +10,7 @@ import { ApiBody, ApiCreatedResponse } from '@nestjs/swagger';
 import { TrakkRegistrationDto } from 'src/dtos/TrakkRegistration.dto';
 import { TrakkRegistrationService } from 'src/services/TrakkRegistration.service';
 
-@Controller('v1/register')
+@Controller('register')
 export class TrakkRegistrationController {
   private logger = new Logger('TrakkRegistrationController');
   constructor(

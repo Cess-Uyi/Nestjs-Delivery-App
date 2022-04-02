@@ -4,9 +4,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Rider } from './RiderRegistration.entity';
 
 @Entity('TrakkRegistration')
 export class TrakkRegistration extends BaseEntity {
@@ -53,4 +55,7 @@ export class TrakkRegistration extends BaseEntity {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updatedAt: Date;
+
+  @OneToOne(() => Rider, (rider) => rider.user)
+  rider: Rider;
 }
