@@ -57,9 +57,7 @@ export class TrakkRegistrationService {
                 resp.data.status == false ||
                 resp.data.message === 'A user with this email already exists.'
               ) {
-                throw new BadRequestException(
-                  'A user with this email already exists.',
-                );
+                throw new BadRequestException(resp.data.message);
               } else {
                 return resp.data.data;
               }

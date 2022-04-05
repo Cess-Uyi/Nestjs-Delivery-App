@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from 'typeorm';
 import { TrakkRegistrationModule } from './modules/TrakkRegistration.module';
 import { AuthModule } from './modules/Auth.module';
-import { RiderRegistrationModule } from './modules/RiderRegistration.module';
+// import { RiderRegistrationModule } from './modules/RiderRegistration.module';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { RiderRegistrationModule } from './modules/RiderRegistration.module';
       useFactory: async () => Object.assign(await getConnectionOptions(), {}),
     }),
     TrakkRegistrationModule,
-    RiderRegistrationModule,
+    // RiderRegistrationModule,
     AuthModule,
   ],
 })

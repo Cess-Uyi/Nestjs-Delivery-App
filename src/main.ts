@@ -17,7 +17,7 @@ async function bootstrap() {
     .addTag('trakk')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('trakk/register', app, document);
+  SwaggerModule.setup('trakk', app, document);
 
   await app.listen(3000);
 }
