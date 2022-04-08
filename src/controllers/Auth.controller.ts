@@ -1,11 +1,11 @@
 import {
   Body,
   Controller,
+  Get,
+  Headers,
   Logger,
   Post,
   // UseGuards,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -17,7 +17,7 @@ import {
   CompleteResetDto,
   ForgotPasswordDto,
   LoginDto,
-} from 'src/dtos/AuthDto';
+} from 'src/dtos/Auth.dto';
 // import { LocalAuthGuard } from 'src/middlewares/auth.guard';
 import { AuthService } from 'src/services/Auth.service';
 
@@ -27,7 +27,6 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  @UsePipes(new ValidationPipe())
   @ApiOkResponse({ description: 'User Login' })
   @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
   @ApiBody({ type: LoginDto })
@@ -51,5 +50,15 @@ export class AuthController {
     @Body() completeResetDto: CompleteResetDto,
   ): Promise<any> {
     return this.authService.completeReset(completeResetDto);
+  }
+
+  @Get('zebrraId')
+  async GetZebrraId(@Headers() headers): Promise<any> {
+    return this.authService.GetZebrraId(headers);
+  }
+
+  @Get('userId')
+  async GetUserId(@Headers() headers): Promise<any> {
+    return this.authService.GetUserId(headers);
   }
 }

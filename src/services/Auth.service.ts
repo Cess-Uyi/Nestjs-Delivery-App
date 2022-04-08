@@ -6,7 +6,7 @@ import {
   CompleteResetDto,
   ForgotPasswordDto,
   LoginDto,
-} from 'src/dtos/AuthDto';
+} from 'src/dtos/Auth.dto';
 import { ValidateTokenResponse } from '../dtos/validateTokenResponse';
 
 @Injectable()
@@ -116,9 +116,7 @@ export class AuthService {
     }
   }
 
-  async GetZebrraId(
-    requestHeaders,
-  ): Promise<AxiosResponse<ValidateTokenResponse>> {
+  async GetZebrraId(requestHeaders): Promise<string> {
     const token = requestHeaders.authorization.split(' ')[1];
     const url = `${process.env.SSO_URL}` + `/User/user/token/validate`;
     const headers = {
@@ -130,10 +128,45 @@ export class AuthService {
         headers,
       });
       const result = await lastValueFrom(axiosResponse);
-      return result;
+      const {
+        data: { zebrraId },
+      } = result.data;
+      return zebrraId;
     } catch (error) {
-      console.log(error);
-      return error;
+      if (
+        error.response.status === 401 ||
+        error.response.statusText === 'Unauthorized'
+      ) {
+        throw new BadRequestException(error.response.statusText);
+      }
+      return error.message;
+    }
+  }
+
+  async GetUserId(requestHeaders): Promise<number> {
+    const token = requestHeaders.authorization.split(' ')[1];
+    const url = `${process.env.SSO_URL}` + `/User/user/token/validate`;
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+    try {
+      const axiosResponse = this.httpService.get<ValidateTokenResponse>(url, {
+        headers,
+      });
+      const result = await lastValueFrom(axiosResponse);
+      const {
+        data: { id },
+      } = result.data;
+      return id;
+    } catch (error) {
+      if (
+        error.response.status === 401 ||
+        error.response.statusText === 'Unauthorized'
+      ) {
+        throw new BadRequestException(error.response.statusText);
+      }
+      return error.message;
     }
   }
 }

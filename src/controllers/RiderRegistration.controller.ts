@@ -3,9 +3,7 @@
 //   Controller,
 //   Post,
 //   UseGuards,
-//   UsePipes,
-//   ValidationPipe,
-//   Headers,
+//                    ,
 // } from '@nestjs/common';
 // import { NextOfKinDto } from 'src/dtos/NextOfKin.dto';
 // import { RiderRegistrationDto } from 'src/dtos/RiderRegistration.dto';
@@ -22,7 +20,6 @@
 
 //   @Post()
 //   @UseGuards(LocalAuthGuard)
-//   @UsePipes(new ValidationPipe())
 //   async register(
 //     @Body()
 //     riderRegistration: RiderRegistrationDto,
