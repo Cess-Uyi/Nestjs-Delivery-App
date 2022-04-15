@@ -1,20 +1,16 @@
-// import { HttpService } from '@nestjs/axios';
+import { HttpService } from '@nestjs/axios';
 import {
   Injectable,
   CanActivate,
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
-// import { AxiosResponse } from 'axios';
-import {
-  // lastValueFrom,
-  // map,
-  Observable,
-} from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
+import { ValidateTokenResponse } from 'src/dtos/Interfaces.dto';
 
 @Injectable()
 export class LocalAuthGuard implements CanActivate {
-  // httpService: HttpService;
+  constructor(private httpService: HttpService) {}
   canActivate(
     context: ExecutionContext,
   ): Observable<boolean> | Promise<boolean> | boolean {
@@ -22,36 +18,26 @@ export class LocalAuthGuard implements CanActivate {
     return this.checkForToken(request);
   }
 
-  checkForToken(request) {
+  checkForToken = async (request) => {
     const bearer = request.headers.authorization;
     if (!bearer) {
       throw new UnauthorizedException('Kindly login to proceed');
     } else {
+      const url = `${process.env.SSO_URL}` + `/User/user/token/validate`;
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: bearer,
+      };
+      try {
+        const axiosResponse = this.httpService.get<ValidateTokenResponse>(url, {
+          headers,
+        });
+        const result = await lastValueFrom(axiosResponse);
+        request.user = result.data.data;
+      } catch (error) {
+        return false;
+      }
       return true;
     }
-  }
-
-  //   getUserFromToken(request): Promise<Observable<AxiosResponse<any>>> {
-  //     const token = request.headers.authorization.split(' ')[1];
-  //     try {
-  //       const user = lastValueFrom(
-  //         this.httpService
-  //           .post(`${process.env.SSO_URL}` + `/User/usertoken/validate`, token, {
-  //             headers: {
-  //               'Content-Type': 'application/json',
-  //             },
-  //           })
-  //           .pipe(
-  //             map((resp) => {
-  //               return resp.data.data;
-  //             }),
-  //           ),
-  //       );
-  //       return user;
-  //     } catch (error) {
-  //       console.log(error);
-  //       return error;
-  //     }
-  //   }
-  // }
+  };
 }
